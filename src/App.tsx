@@ -21,12 +21,19 @@ export default function App() {
       setLoading(false);
     });
 
-    // 2. Listen for state changes (Login, Logout)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
+    // 2. Listen for state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
       setSession(currentSession);
+      
+      // THE QUARANTINE TRAP:
+      // If Supabase flags this specific login as a password recovery,
+      // instantly intercept the router and force them to the update page.
+      if (event === 'PASSWORD_RECOVERY') {
+        window.location.href = '/update-password';
+      }
     });
 
-    // 3. The 60-Minute Inactivity Timeout (3,600,000 milliseconds)
+    // 3. The 60-Minute Inactivity Timeout
     let timeoutId: ReturnType<typeof setTimeout>;
     
     const resetTimer = () => {
@@ -39,7 +46,6 @@ export default function App() {
       }
     };
 
-    // Track standard hardware interactions to keep the session alive
     window.addEventListener('mousemove', resetTimer);
     window.addEventListener('keydown', resetTimer);
     window.addEventListener('click', resetTimer);
@@ -57,7 +63,6 @@ export default function App() {
     };
   }, [session]);
 
-  // Prevent UI flashing while Supabase confirms the token
   if (loading) {
     return <div className="min-h-screen bg-[#080808]" />;
   }
@@ -65,15 +70,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* PUBLIC & GHOST ROUTES */}
         <Route 
           path="/" 
           element={session ? <Navigate to="/dashboard" replace /> : <Login />} 
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        
+        {/* We keep this public so the trap can force users here */}
         <Route path="/update-password" element={<UpdatePassword />} />
 
-        {/* PROTECTED ROUTES (Boot user to '/' if no active session) */}
         <Route 
           path="/dashboard" 
           element={session ? <Dashboard /> : <Navigate to="/" replace />} 
@@ -82,8 +87,6 @@ export default function App() {
           path="/settings" 
           element={session ? <Settings /> : <Navigate to="/" replace />} 
         />
-
-        {/* CATCH-ALL (Invalid URLs go to root) */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
