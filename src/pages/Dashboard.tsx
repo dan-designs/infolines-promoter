@@ -1,0 +1,1 @@
+export default function Dashboard() { return <div className="text-white font-mono p-8">DASHBOARD_PLACEHOLDER</div>; }

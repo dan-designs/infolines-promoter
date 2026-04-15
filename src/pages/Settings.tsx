@@ -1,0 +1,1 @@
+export default function Settings() { return <div className="text-white font-mono p-8">SETTINGS_PLACEHOLDER</div>; }
