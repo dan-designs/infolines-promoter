@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { X, Calendar, Clock, MapPin, User, Save } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-// EXPORTED TYPE: Guarantees Dashboard and Drawer agree on the exact shape of your Supabase schema
 export interface EventRecord {
   id: string;
   promoter_id: string;
@@ -26,7 +25,6 @@ interface EventDrawerProps {
   eventToEdit?: EventRecord | null;
 }
 
-// STABLE CONSTANT: Defined outside the component to satisfy exhaustive-deps linter
 const defaultFormState = {
   event_name: '', venue_name: '', address: '', startDate: '', startTime: '', 
   endDate: '', endTime: '', artists: '', genres: '', event_description: '', 
@@ -38,7 +36,6 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState(defaultFormState);
 
-  // Safely parses incoming ISO strings back into local HTML date/time inputs
   const parseLocalTime = (isoString: string) => {
     const d = new Date(isoString);
     const offset = d.getTimezoneOffset() * 60000;
@@ -89,7 +86,6 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) throw new Error('Authentication error. Please log in again.');
 
-      // Enforce Postgres timestamp formatting
       const start_time = new Date(`${formData.startDate}T${formData.startTime}`).toISOString();
       const end_time = new Date(`${formData.endDate}T${formData.endTime}`).toISOString();
 
@@ -105,15 +101,13 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
         event_description: formData.event_description || null,
         arrival_instructions: formData.arrival_instructions || null,
         ticket_link: formData.ticket_link || null,
-        status: formData.status, // We default this to 'published' and bypass the draft state entirely
+        status: formData.status, 
       };
 
       if (eventToEdit) {
-        // UPDATE Existing
         const { error: updateError } = await supabase.from('events').update(payload).eq('id', eventToEdit.id);
         if (updateError) throw updateError;
       } else {
-        // INSERT New
         const { error: insertError } = await supabase.from('events').insert([payload]);
         if (insertError) throw insertError;
       }
@@ -122,7 +116,6 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
       onSuccess();
       onClose();
     } catch (err) {
-      // STRICT TYPING: Checking if error is an instance of Error
       const errorMessage = err instanceof Error ? err.message : 'Failed to save event data.';
       setError(errorMessage);
     } finally {
@@ -140,7 +133,7 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
         
         <div className="p-6 border-b border-terminal-green/20 flex justify-between items-center bg-terminal-green/5 relative">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-terminal-green/0 via-terminal-green/50 to-terminal-green/0"></div>
-          <h2 className="font-pixel text-2xl sm:text-3xl tracking-widest mt-1">
+          <h2 className="font-pixel text-lg sm:text-xl tracking-widest mt-1">
             {eventToEdit ? 'EDIT_EVENT' : 'CREATE_EVENT'}
           </h2>
           <button onClick={onClose} className="hover:text-black hover:bg-terminal-green p-2 transition-colors cursor-pointer">
@@ -266,7 +259,7 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
               type="button" 
               onClick={onClose}
               disabled={isLoading}
-              className="col-span-2 sm:col-span-1 bg-transparent text-terminal-green border border-terminal-green/50 hover:bg-terminal-green/10 transition-colors py-3 px-4 font-pixel tracking-widest disabled:opacity-50 cursor-pointer"
+              className="col-span-2 sm:col-span-1 bg-transparent text-terminal-green border border-terminal-green/50 hover:bg-terminal-green/10 transition-colors py-3 px-4 font-pixel text-xs sm:text-sm tracking-widest disabled:opacity-50 cursor-pointer"
             >
               CANCEL
             </button>
@@ -274,7 +267,7 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
               type="submit" 
               form="event-form"
               disabled={isLoading}
-              className="col-span-2 sm:col-span-1 bg-terminal-green text-black border border-terminal-green hover:bg-[#00cc33] transition-colors py-3 px-4 font-pixel tracking-widest flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="col-span-2 sm:col-span-1 bg-terminal-green text-black border border-terminal-green hover:bg-[#00cc33] transition-colors py-3 px-4 font-pixel text-xs sm:text-sm tracking-widest flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               <Save size={16} /> 
               {isLoading ? 'EXECUTING...' : eventToEdit ? 'SAVE_CHANGES' : 'CREATE_EVENT'}

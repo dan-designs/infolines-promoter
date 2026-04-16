@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { 
-  Terminal, Home, Calendar as CalendarIcon, Users, Settings, 
+  Home, Calendar as CalendarIcon, Users, Settings, 
   Search, User as UserIcon, Plus, Clock, Key, LogOut, MoreVertical
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -75,7 +75,6 @@ function EventCard({
               {menuOpen && (
                 <div className="absolute right-0 top-8 w-32 border border-terminal-green/50 bg-terminal-bg shadow-[0_0_15px_rgba(0,255,65,0.2)] z-20">
                   <button 
-                    // OPTIONAL CHAINING: Bypasses the "unused expression" linter error
                     onClick={(e) => { e.stopPropagation(); onEdit?.(event); setMenuOpen(false); }}
                     className="w-full text-left px-4 py-2.5 text-xs font-bold tracking-widest hover:bg-terminal-green/10 transition-colors cursor-pointer"
                   >
@@ -121,6 +120,7 @@ export default function Dashboard() {
     
     setUserEmail(user.email ?? 'operator@infolines.sys');
 
+    // Strict boundary: Only fetches events owned by the authenticated UUID
     const { data, error } = await supabase
       .from('events')
       .select('*')
@@ -133,7 +133,6 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    // ASYNC WRAPPER: Satisfies the cascading render linter securely
     let mounted = true;
     const loadData = async () => {
       if (mounted) await fetchEvents();
@@ -165,7 +164,6 @@ export default function Dashboard() {
 
   const now = new Date();
   
-  // Filtering logic matching the removal of the draft state
   const futureEvents = events.filter(e => new Date(e.start_time) >= now && e.status !== 'cancelled');
   const history = events.filter(e => new Date(e.start_time) < now || e.status === 'cancelled');
 
@@ -175,7 +173,7 @@ export default function Dashboard() {
       {/* Left Nav Rail */}
       <aside className="w-16 border-r border-terminal-green/20 flex flex-col items-center py-4 gap-8 z-20 bg-terminal-bg relative hidden sm:flex">
         <div className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)]">
-          <Terminal className="w-6 h-6" />
+          <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
         </div>
         <nav className="flex flex-col gap-4 w-full items-center">
           <button className="w-10 h-10 flex items-center justify-center transition-colors relative group text-black bg-terminal-green shadow-[0_0_10px_rgba(0,255,65,0.3)] cursor-pointer">
@@ -199,7 +197,7 @@ export default function Dashboard() {
 
         <header className="h-16 border-b border-terminal-green/20 flex items-center justify-between px-4 sm:px-6 bg-terminal-bg/90 backdrop-blur-md relative z-20">
           <div className="flex items-center gap-4">
-            <h1 className="font-pixel text-xl sm:text-2xl tracking-widest mt-1">INFOLINES // DASHBOARD</h1>
+            <h1 className="font-pixel text-base sm:text-lg tracking-widest mt-1">INFOLINES // DASHBOARD</h1>
           </div>
           <div className="flex items-center gap-4 sm:gap-6">
             <div className="relative hidden md:block w-64">
@@ -251,7 +249,7 @@ export default function Dashboard() {
             <section>
               <div className="flex items-center gap-4 mb-6 border-b border-terminal-green/20 pb-3">
                 <div className="w-2 h-2 bg-terminal-green animate-pulse"></div>
-                <h2 className="font-pixel text-2xl sm:text-3xl tracking-widest mt-1">FUTURE_EVENTS</h2>
+                <h2 className="font-pixel text-lg sm:text-xl tracking-widest mt-1">FUTURE_EVENTS</h2>
               </div>
               {futureEvents.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -272,7 +270,7 @@ export default function Dashboard() {
             <section>
               <div className="flex items-center gap-4 mb-6 border-b border-terminal-green/20 pb-3 opacity-60">
                 <div className="w-2 h-2 bg-terminal-green/50"></div>
-                <h2 className="font-pixel text-2xl sm:text-3xl tracking-widest mt-1">EVENT_HISTORY</h2>
+                <h2 className="font-pixel text-lg sm:text-xl tracking-widest mt-1">EVENT_HISTORY</h2>
               </div>
               {history.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -293,7 +291,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* FAB Wired to create new events */}
         <button 
           onClick={handleCreateNew}
           className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-14 h-14 sm:w-16 sm:h-16 bg-terminal-green text-black flex items-center justify-center hover:bg-[#00cc33] transition-all shadow-[0_0_20px_rgba(0,255,65,0.4)] hover:shadow-[0_0_30px_rgba(0,255,65,0.6)] z-30 group cursor-pointer"
