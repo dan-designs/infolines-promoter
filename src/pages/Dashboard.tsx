@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { 
   Home, Calendar as CalendarIcon, Users, Settings, 
-  Search, User as UserIcon, Plus, Clock, Key, LogOut, MoreVertical
+  Search, User as UserIcon, Plus, Clock, Key, LogOut, MoreVertical,
+  MapPin, Tag, Link as LinkIcon
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-// TYPE ISOLATION: Explicitly imports the type for Vercel's strict verbatimModuleSyntax
 import EventDrawer from '../components/EventDrawer';
 import type { EventRecord } from '../components/EventDrawer';
 
@@ -19,7 +19,6 @@ const formatTime = (dateString: string) => {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
 };
 
-// Internal EventCard Component
 function EventCard({ 
   event, 
   opacity = "opacity-100", 
@@ -43,26 +42,24 @@ function EventCard({
     return () => window.removeEventListener('click', closeMenu);
   }, [menuOpen]);
 
-  // Strip interactivity if it is historical/read-only
   const interactiveStyles = isReadOnly 
     ? 'cursor-default' 
     : 'cursor-pointer hover:bg-terminal-green/10';
 
   return (
-    <div className={`border border-terminal-green/30 ${borderStyle} p-5 bg-terminal-green/5 transition-colors relative group ${interactiveStyles} ${opacity}`}>
+    <div className={`border border-terminal-green/30 ${borderStyle} p-5 bg-terminal-green/5 transition-colors relative group flex flex-col ${interactiveStyles} ${opacity}`}>
       <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-terminal-green"></div>
       <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-terminal-green"></div>
       <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-terminal-green"></div>
       <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-terminal-green"></div>
       
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex justify-between items-start mb-4">
         <h3 className="font-bold tracking-wider truncate pr-2 text-lg uppercase">{event.event_name}</h3>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] px-2 py-1 border border-terminal-green/50 bg-terminal-green/10 tracking-widest uppercase">
+          <span className="text-[10px] px-2 py-1 border border-terminal-green/50 bg-terminal-green/10 tracking-widest uppercase whitespace-nowrap">
             {event.status}
           </span>
           
-          {/* Action Menu (Hidden if Read-Only) */}
           {!isReadOnly && (
             <div className="relative">
               <button 
@@ -93,15 +90,51 @@ function EventCard({
         </div>
       </div>
       
-      <div className="space-y-2 text-sm opacity-80 font-mono">
-        <div className="flex items-center gap-3">
+      {/* Time Group */}
+      <div className="flex flex-wrap gap-4 text-sm opacity-80 font-mono mb-4">
+        <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-terminal-green/70" />
           <span>{formatDate(event.start_time)}</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-terminal-green/70" />
           <span>{formatTime(event.start_time)}</span>
         </div>
+      </div>
+
+      {/* Expanded Data Block */}
+      <div className="flex-1 space-y-3 text-xs opacity-75 border-t border-terminal-green/20 pt-4 font-mono">
+        <div className="flex items-start gap-2">
+          <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-terminal-green/70" />
+          <span className="leading-relaxed">{event.venue_name} <br /> {event.address}</span>
+        </div>
+        
+        <div className="flex items-start gap-2">
+          <UserIcon className="w-3.5 h-3.5 mt-0.5 shrink-0 text-terminal-green/70" />
+          <span className="line-clamp-2 leading-relaxed uppercase">{event.artists}</span>
+        </div>
+
+        {event.genres && (
+          <div className="flex items-start gap-2">
+            <Tag className="w-3.5 h-3.5 mt-0.5 shrink-0 text-terminal-green/70" />
+            <span className="uppercase">{event.genres}</span>
+          </div>
+        )}
+
+        {event.ticket_link && (
+          <div className="flex items-center gap-2 truncate">
+            <LinkIcon className="w-3.5 h-3.5 shrink-0 text-terminal-green/70" />
+            <a href={event.ticket_link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="hover:underline truncate hover:text-white transition-colors">
+              {event.ticket_link}
+            </a>
+          </div>
+        )}
+
+        {event.event_description && (
+          <p className="line-clamp-3 italic opacity-80 mt-3 border-l-2 border-terminal-green/30 pl-3 leading-relaxed">
+            "{event.event_description}"
+          </p>
+        )}
       </div>
     </div>
   );
@@ -120,7 +153,6 @@ export default function Dashboard() {
     
     setUserEmail(user.email ?? 'operator@infolines.sys');
 
-    // Strict boundary: Only fetches events owned by the authenticated UUID
     const { data, error } = await supabase
       .from('events')
       .select('*')

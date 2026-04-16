@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, Clock, MapPin, User, Save } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, User, Save, Link as LinkIcon, Tag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export interface EventRecord {
@@ -158,6 +158,7 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
                   placeholder="OPERATION_NAME" 
                 />
               </div>
+              
               <div>
                 <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Artists *</label>
                 <div className="relative">
@@ -166,6 +167,18 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
                     type="text" name="artists" required value={formData.artists} onChange={handleChange}
                     className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm transition-all rounded-none" 
                     placeholder="COMMA_SEPARATED_LIST" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Genres (OPTIONAL / MAX 3)</label>
+                <div className="relative">
+                  <Tag className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+                  <input 
+                    type="text" name="genres" value={formData.genres || ''} onChange={handleChange}
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm transition-all rounded-none" 
+                    placeholder="TECHNO, HOUSE, TRANCE" 
                   />
                 </div>
               </div>
@@ -242,11 +255,32 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
 
             <div className="space-y-4 border-t border-terminal-green/20 pt-6">
               <div>
-                <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Description</label>
+                <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Ticket_Link (OPTIONAL)</label>
+                <div className="relative">
+                  <LinkIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+                  <input 
+                    type="url" name="ticket_link" value={formData.ticket_link || ''} onChange={handleChange}
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm transition-all rounded-none" 
+                    placeholder="HTTPS://..." 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Description (OPTIONAL)</label>
                 <textarea 
                   name="event_description" rows={3} value={formData.event_description || ''} onChange={handleChange}
                   className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 px-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm resize-none transition-all rounded-none" 
                   placeholder="MISSION_DETAILS..."
+                ></textarea>
+              </div>
+
+              <div>
+                <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Arrival_Instructions (OPTIONAL)</label>
+                <textarea 
+                  name="arrival_instructions" rows={3} value={formData.arrival_instructions || ''} onChange={handleChange}
+                  className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 px-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm resize-none transition-all rounded-none" 
+                  placeholder="SECURE_ENTRY_PROTOCOLS..."
                 ></textarea>
               </div>
             </div>
