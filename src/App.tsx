@@ -6,6 +6,8 @@ import type { Session } from '@supabase/supabase-js';
 // Pages
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import CalendarView from './pages/Calendar';
+import Team from './pages/Team';
 import Settings from './pages/Settings';
 import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
@@ -79,14 +81,24 @@ export default function App() {
         {/* We keep this public so the trap can force users here */}
         <Route path="/update-password" element={<UpdatePassword />} />
 
+        {/* Protected Platform Routes */}
         <Route 
           path="/dashboard" 
           element={session ? <Dashboard /> : <Navigate to="/" replace />} 
         />
         <Route 
+          path="/calendar" 
+          element={session ? <CalendarView /> : <Navigate to="/" replace />} 
+        />
+        <Route 
+          path="/team" 
+          element={session ? <Team /> : <Navigate to="/" replace />} 
+        />
+        <Route 
           path="/settings" 
           element={session ? <Settings /> : <Navigate to="/" replace />} 
         />
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

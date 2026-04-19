@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Home, Calendar as CalendarIcon, Users, Settings, 
   Search, User as UserIcon, Plus, Clock, Key, LogOut, MoreVertical,
@@ -141,6 +142,7 @@ function EventCard({
 }
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [events, setEvents] = useState<EventRecord[]>([]);
@@ -208,16 +210,16 @@ export default function Dashboard() {
           <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
         </div>
         <nav className="flex flex-col gap-4 w-full items-center">
-          <button className="w-10 h-10 flex items-center justify-center transition-colors relative group text-black bg-terminal-green shadow-[0_0_10px_rgba(0,255,65,0.3)] cursor-pointer">
+          <button onClick={() => navigate('/dashboard')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-black bg-terminal-green shadow-[0_0_10px_rgba(0,255,65,0.3)] cursor-pointer">
             <Home className="w-5 h-5" />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
+          <button onClick={() => navigate('/calendar')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
             <CalendarIcon className="w-5 h-5" />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
+          <button onClick={() => navigate('/team')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
             <Users className="w-5 h-5" />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 mt-auto cursor-pointer">
+          <button onClick={() => navigate('/settings')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 mt-auto cursor-pointer">
             <Settings className="w-5 h-5" />
           </button>
         </nav>
