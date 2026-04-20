@@ -38,7 +38,7 @@ export default function Settings() {
         // No row exists yet, we initialize a default state locally
         setSettings({
           id: user.id,
-          org_name: null,
+          promoter_name: null, // Fixed: Matched to DB schema (was org_name)
           default_event_propagation: 'Always Visible',
           default_venue_reveal: 'Always Visible'
         });
@@ -69,7 +69,6 @@ export default function Settings() {
       setPasswordMessage("RECOVERY_LINK_DISPATCHED");
       setTimeout(() => setPasswordMessage(null), 5000);
     } catch {
-      // Opted for catch without (err) binding to satisfy strict ESLint rules
       setPasswordMessage("ERROR_DISPATCHING_LINK");
       setTimeout(() => setPasswordMessage(null), 5000);
     }
@@ -167,7 +166,7 @@ export default function Settings() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                   <div>
                     <p className="text-xs opacity-60 tracking-widest uppercase mb-2">Organization_Name</p>
-                    <p className="text-lg font-bold tracking-widest uppercase">{settings?.org_name || 'UNASSIGNED_ALIAS'}</p>
+                    <p className="text-lg font-bold tracking-widest uppercase">{settings?.promoter_name || 'UNASSIGNED_ALIAS'}</p>
                   </div>
                   <div>
                     <p className="text-xs opacity-60 tracking-widest uppercase mb-2">Security_Protocol</p>

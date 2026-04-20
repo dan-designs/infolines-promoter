@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 
 export interface PromoterSettings {
   id: string;
-  org_name: string | null;
+  promoter_name: string | null;
   default_event_propagation: string;
   default_venue_reveal: string;
 }
@@ -32,7 +32,7 @@ export default function SettingsDrawer({ isOpen, onClose, onSuccess, activeSecti
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    org_name: '',
+    promoter_name: '',
     default_event_propagation: 'Always Visible',
     default_venue_reveal: 'Always Visible',
   });
@@ -40,7 +40,7 @@ export default function SettingsDrawer({ isOpen, onClose, onSuccess, activeSecti
   useEffect(() => {
     if (isOpen && currentSettings) {
       setFormData({
-        org_name: currentSettings.org_name || '',
+        promoter_name: currentSettings.promoter_name || '',
         default_event_propagation: currentSettings.default_event_propagation || 'Always Visible',
         default_venue_reveal: currentSettings.default_venue_reveal || 'Always Visible',
       });
@@ -61,12 +61,12 @@ export default function SettingsDrawer({ isOpen, onClose, onSuccess, activeSecti
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Authentication error.');
 
-      // UPSERT the promoter settings
+      // UPSERT the promoter settings with the correct database columns
       const { error: upsertError } = await supabase
         .from('promoters')
         .upsert({
           id: user.id, // Primary key
-          org_name: formData.org_name,
+          promoter_name: formData.promoter_name, // Fixed constraint violation
           default_event_propagation: formData.default_event_propagation,
           default_venue_reveal: formData.default_venue_reveal,
         });
@@ -118,7 +118,7 @@ export default function SettingsDrawer({ isOpen, onClose, onSuccess, activeSecti
                   <div className="relative">
                     <Building className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
                     <input 
-                      type="text" name="org_name" value={formData.org_name} onChange={handleChange}
+                      type="text" name="promoter_name" value={formData.promoter_name} onChange={handleChange}
                       className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-4 text-terminal-green placeholder-terminal-green/30 font-mono text-sm transition-all rounded-none" 
                       placeholder="ENTER_PROMOTER_ALIAS" 
                     />
