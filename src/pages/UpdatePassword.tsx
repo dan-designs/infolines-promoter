@@ -61,7 +61,7 @@ export default function UpdatePassword() {
           {status !== 'success' ? (
             <>
               <div className="mb-10">
-                <h2 className="text-3xl font-pixel mb-3 tracking-wider">CREDENTIAL_REWRITE</h2>
+                <h2 className="text-3xl font-pixel mb-3 tracking-wider">UPADATE_PASSWORD</h2>
                 <p className="text-[#00FF00]/70 text-sm tracking-wide">Establish new operator passcode.</p>
               </div>
 
