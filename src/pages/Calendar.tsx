@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Home, Calendar as CalendarIcon, Users, Settings, 
-  User as UserIcon, Plus, Key, LogOut, ChevronLeft, ChevronRight
+  User as UserIcon, Plus, Key, LogOut, ChevronLeft, ChevronRight, ChevronDown
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -181,10 +181,10 @@ export default function CalendarView() {
 
         {/* Calendar Viewport */}
         <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-10 relative z-10 flex flex-col">
-          <div className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6">
+          <div className="max-w-7xl mx-auto w-full min-h-full flex flex-col space-y-6">
             
             {/* Controls */}
-            <div className="flex items-center justify-between border-b border-terminal-green/20 pb-4">
+            <div className="flex items-center justify-between pb-4">
               <div className="flex items-center gap-4">
                 <button onClick={prevMonth} className="p-2 border border-terminal-green/50 hover:bg-terminal-green/20 transition-colors cursor-pointer shrink-0">
                   <ChevronLeft className="w-5 h-5" />
@@ -195,44 +195,50 @@ export default function CalendarView() {
                 
                 {/* Month & Year Jump Pickers */}
                 <div className="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4">
-                  <select 
-                    value={month} 
-                    onChange={(e) => {
-                      const newDate = new Date(currentDate);
-                      newDate.setMonth(parseInt(e.target.value));
-                      setCurrentDate(newDate);
-                    }}
-                    className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-xl sm:text-2xl tracking-widest uppercase pb-1 outline-none cursor-pointer transition-colors text-center"
-                  >
-                    {MONTH_NAMES.map((m, i) => (
-                      <option key={m} value={i} className="bg-terminal-bg text-sm font-mono">{m}</option>
-                    ))}
-                  </select>
-                  <select 
-                    value={year} 
-                    onChange={(e) => {
-                      const newDate = new Date(currentDate);
-                      newDate.setFullYear(parseInt(e.target.value));
-                      setCurrentDate(newDate);
-                    }}
-                    className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-xl sm:text-2xl tracking-widest uppercase pb-1 outline-none cursor-pointer transition-colors text-center"
-                  >
-                    {Array.from({length: 10}, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
-                      <option key={y} value={y} className="bg-terminal-bg text-sm font-mono">{y}</option>
-                    ))}
-                  </select>
+                  <div className="relative flex items-center">
+                    <select 
+                      value={month} 
+                      onChange={(e) => {
+                        const newDate = new Date(currentDate);
+                        newDate.setMonth(parseInt(e.target.value));
+                        setCurrentDate(newDate);
+                      }}
+                      className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase pb-1 pr-6 outline-none cursor-pointer transition-colors text-center"
+                    >
+                      {MONTH_NAMES.map((m, i) => (
+                        <option key={m} value={i} className="bg-terminal-bg text-sm font-mono">{m}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
+                  </div>
+                  <div className="relative flex items-center">
+                    <select 
+                      value={year} 
+                      onChange={(e) => {
+                        const newDate = new Date(currentDate);
+                        newDate.setFullYear(parseInt(e.target.value));
+                        setCurrentDate(newDate);
+                      }}
+                      className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase pb-1 pr-6 outline-none cursor-pointer transition-colors text-center"
+                    >
+                      {Array.from({length: 10}, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
+                        <option key={y} value={y} className="bg-terminal-bg text-sm font-mono">{y}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
+                  </div>
                 </div>
               </div>
               <button 
                 onClick={jumpToToday}
-                className="px-4 py-2 border border-terminal-green/50 text-xs font-bold tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block shrink-0"
+                className="px-4 py-2 border border-terminal-green/50 text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block shrink-0"
               >
                 RETURN_TO_PRESENT
               </button>
             </div>
 
             {/* Grid Container */}
-            <div className="flex-1 flex flex-col min-h-[600px] lg:min-h-0 border border-terminal-green/30 bg-terminal-green/5">
+            <div className="flex-1 flex flex-col min-h-[600px] border border-terminal-green/30 bg-terminal-green/5">
               
               {/* Day of Week Headers */}
               <div className="grid grid-cols-7 border-b border-terminal-green/30 bg-terminal-green/10">
@@ -244,7 +250,7 @@ export default function CalendarView() {
               </div>
               
               {/* Day Cells */}
-              <div className="flex-1 grid grid-cols-7 grid-rows-5 sm:grid-rows-auto h-full">
+              <div className="flex-1 grid grid-cols-7 auto-rows-fr h-full">
                 {calendarCells.map((day, index) => {
                   const isToday = day && 
                     day.getDate() === new Date().getDate() && 
