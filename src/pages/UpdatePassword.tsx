@@ -125,19 +125,35 @@ export default function UpdatePassword() {
                 [ OK ] CREDENTIALS ACCEPTED. SESSION CLEARED.
               </div>
 
-              <div className="space-y-8 border-t-2 border-[#00FF00]/20 pt-8">
-                <div>
-                  <h3 className="font-pixel text-lg tracking-widest mb-3">PLATFORM_OPERATORS</h3>
-                  <p className="text-sm opacity-80 font-mono leading-relaxed">
-                    Navigate back to <span className="text-[#00FF00] font-bold">www.infolines.app</span> to authenticate with your new credentials.
-                  </p>
+              <div className="space-y-10 border-t-2 border-[#00FF00]/20 pt-8">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-pixel text-lg tracking-widest mb-3">PROMOTERS</h3>
+                    <p className="text-sm opacity-80 font-mono leading-relaxed">
+                      Navigate back to <span className="text-[#00FF00] font-bold">www.infolines.app</span> to authenticate with your new credentials.
+                    </p>
+                  </div>
+                  <a 
+                    href="https://www.infolines.app"
+                    className="w-full bg-[#00FF00] text-[#080808] border-2 border-[#00FF00] hover:bg-[#080808] hover:text-[#00FF00] transition-none py-4 px-4 font-pixel text-xl tracking-widest flex items-center justify-center text-center rounded-none cursor-pointer block"
+                  >
+                    PROMOTER_LOGIN
+                  </a>
                 </div>
                 
-                <div>
-                  <h3 className="font-pixel text-lg tracking-widest mb-3">MOBILE_ATTENDEES</h3>
-                  <p className="text-sm opacity-80 font-mono leading-relaxed">
-                    Close this browser window and reopen your Infolines native app to log in.
-                  </p>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-pixel text-lg tracking-widest mb-3">ATTENDEES</h3>
+                    <p className="text-sm opacity-80 font-mono leading-relaxed">
+                      Tap the ATTENDEE_LOGIN below to navigate back to the Infolines App.
+                    </p>
+                  </div>
+                  <a 
+                    href="infolines://"
+                    className="w-full bg-[#00FF00] text-[#080808] border-2 border-[#00FF00] hover:bg-[#080808] hover:text-[#00FF00] transition-none py-4 px-4 font-pixel text-xl tracking-widest flex items-center justify-center text-center rounded-none cursor-pointer block"
+                  >
+                    ATTENDEE_LOGIN
+                  </a>
                 </div>
               </div>
             </div>
