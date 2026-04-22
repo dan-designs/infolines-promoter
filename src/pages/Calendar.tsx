@@ -97,6 +97,11 @@ export default function CalendarView() {
     calendarCells.push(new Date(year, month, i));
   }
 
+  // Fill empty padding days AFTER the end of the month to complete the visual grid
+  while (calendarCells.length % 7 !== 0) {
+    calendarCells.push(null);
+  }
+
   // Filter and chronologically sort events for a specific day cell
   const getEventsForDay = (day: Date) => {
     if (!day) return [];
@@ -181,7 +186,7 @@ export default function CalendarView() {
 
         {/* Calendar Viewport */}
         <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-10 relative z-10 flex flex-col">
-          <div className="max-w-7xl mx-auto w-full min-h-full flex flex-col space-y-6">
+          <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col space-y-6">
             
             {/* Controls */}
             <div className="flex items-center justify-between pb-4">
@@ -203,7 +208,7 @@ export default function CalendarView() {
                         newDate.setMonth(parseInt(e.target.value));
                         setCurrentDate(newDate);
                       }}
-                      className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase pb-1 pr-6 outline-none cursor-pointer transition-colors text-center"
+                      className="appearance-none bg-transparent hover:text-white text-terminal-green text-xs font-bold tracking-widest uppercase pr-6 outline-none cursor-pointer transition-colors text-center"
                     >
                       {MONTH_NAMES.map((m, i) => (
                         <option key={m} value={i} className="bg-terminal-bg text-sm font-mono">{m}</option>
@@ -219,7 +224,7 @@ export default function CalendarView() {
                         newDate.setFullYear(parseInt(e.target.value));
                         setCurrentDate(newDate);
                       }}
-                      className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase pb-1 pr-6 outline-none cursor-pointer transition-colors text-center"
+                      className="appearance-none bg-transparent hover:text-white text-terminal-green text-xs font-bold tracking-widest uppercase pr-6 outline-none cursor-pointer transition-colors text-center"
                     >
                       {Array.from({length: 10}, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
                         <option key={y} value={y} className="bg-terminal-bg text-sm font-mono">{y}</option>
@@ -231,17 +236,17 @@ export default function CalendarView() {
               </div>
               <button 
                 onClick={jumpToToday}
-                className="px-4 py-2 border border-terminal-green/50 text-terminal-green font-pixel text-lg sm:text-xl tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block shrink-0"
+                className="px-4 py-2 border border-terminal-green/50 text-terminal-green text-xs font-bold tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block shrink-0"
               >
                 RETURN_TO_PRESENT
               </button>
             </div>
 
             {/* Grid Container */}
-            <div className="flex-1 flex flex-col min-h-[600px] border border-terminal-green/30 bg-terminal-green/5">
+            <div className="flex-1 flex flex-col min-h-[600px] lg:min-h-0 border border-terminal-green/30 bg-terminal-green/5">
               
               {/* Day of Week Headers */}
-              <div className="grid grid-cols-7 border-b border-terminal-green/30 bg-terminal-green/10">
+              <div className="grid grid-cols-7 border-b border-terminal-green/30 bg-terminal-green/10 shrink-0">
                 {DAYS_OF_WEEK.map(day => (
                   <div key={day} className="py-3 text-center text-xs font-bold tracking-widest uppercase border-r border-terminal-green/30 last:border-r-0">
                     {day}
