@@ -208,13 +208,13 @@ export default function CalendarView() {
                         newDate.setMonth(parseInt(e.target.value));
                         setCurrentDate(newDate);
                       }}
-                      className="appearance-none bg-transparent hover:text-white text-terminal-green text-xs font-bold tracking-widest uppercase pr-6 outline-none cursor-pointer transition-colors text-center"
+                      className="appearance-none bg-transparent border border-terminal-green/50 px-4 py-2 pr-8 hover:bg-terminal-green/10 text-terminal-green text-xs font-bold tracking-widest uppercase outline-none cursor-pointer transition-colors text-center"
                     >
                       {MONTH_NAMES.map((m, i) => (
                         <option key={m} value={i} className="bg-terminal-bg text-sm font-mono">{m}</option>
                       ))}
                     </select>
-                    <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
+                    <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
                   </div>
                   <div className="relative flex items-center">
                     <select 
@@ -224,13 +224,13 @@ export default function CalendarView() {
                         newDate.setFullYear(parseInt(e.target.value));
                         setCurrentDate(newDate);
                       }}
-                      className="appearance-none bg-transparent hover:text-white text-terminal-green text-xs font-bold tracking-widest uppercase pr-6 outline-none cursor-pointer transition-colors text-center"
+                      className="appearance-none bg-transparent border border-terminal-green/50 px-4 py-2 pr-8 hover:bg-terminal-green/10 text-terminal-green text-xs font-bold tracking-widest uppercase outline-none cursor-pointer transition-colors text-center"
                     >
                       {Array.from({length: 10}, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
                         <option key={y} value={y} className="bg-terminal-bg text-sm font-mono">{y}</option>
                       ))}
                     </select>
-                    <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
+                    <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-70" />
                   </div>
                 </div>
               </div>
