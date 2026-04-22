@@ -10,14 +10,12 @@ export default function Team() {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user.email ?? 'operator@infolines.sys');
-        setUserId(user.id);
       }
     };
     fetchUser();
@@ -32,9 +30,12 @@ export default function Team() {
       
       {/* Left Nav Rail */}
       <aside className="w-16 border-r border-terminal-green/20 flex flex-col items-center py-4 gap-8 z-20 bg-terminal-bg relative hidden sm:flex">
-        <div className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+        <button 
+          onClick={() => navigate('/dashboard')}
+          className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)] cursor-pointer hover:bg-terminal-green/30 transition-colors"
+        >
           <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
-        </div>
+        </button>
         <nav className="flex flex-col gap-4 w-full items-center">
           <button onClick={() => navigate('/dashboard')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
             <Home className="w-5 h-5" />
@@ -80,7 +81,7 @@ export default function Team() {
                     </div>
                     <div className="py-2">
                       <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-terminal-green/10 transition-colors flex items-center gap-3 tracking-wider cursor-pointer">
-                        <Key className="w-4 h-4 opacity-70" /> UPDATE_KEY
+                        <Key className="w-4 h-4 opacity-70" /> UPDATE_PASSWORD
                       </button>
                       <button 
                         onClick={handleSignOut}
@@ -119,11 +120,6 @@ export default function Team() {
                       <span className="text-[10px] sm:text-xs tracking-widest uppercase bg-terminal-green text-black px-2 py-0.5">LEAD_OPERATOR</span>
                     </div>
                     <h2 className="text-lg sm:text-xl font-bold tracking-widest uppercase truncate">{userEmail}</h2>
-                  </div>
-                  
-                  <div className="pt-2 border-t border-terminal-green/20">
-                    <p className="text-xs opacity-60 tracking-widest uppercase mb-1">SYSTEM_UUID</p>
-                    <p className="text-xs font-mono opacity-80 truncate">{userId || 'AUTHENTICATING...'}</p>
                   </div>
                 </div>
               </div>

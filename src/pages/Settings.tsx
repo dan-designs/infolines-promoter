@@ -38,7 +38,7 @@ export default function Settings() {
         // No row exists yet, we initialize a default state locally
         setSettings({
           id: user.id,
-          promoter_name: null, // Fixed: Matched to DB schema (was org_name)
+          promoter_name: null, 
           default_event_propagation: 'Always Visible',
           default_venue_reveal: 'Always Visible'
         });
@@ -79,9 +79,12 @@ export default function Settings() {
       
       {/* Left Nav Rail */}
       <aside className="w-16 border-r border-terminal-green/20 flex flex-col items-center py-4 gap-8 z-20 bg-terminal-bg relative hidden sm:flex">
-        <div className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+        <button 
+          onClick={() => navigate('/dashboard')}
+          className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)] cursor-pointer hover:bg-terminal-green/30 transition-colors"
+        >
           <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
-        </div>
+        </button>
         <nav className="flex flex-col gap-4 w-full items-center">
           <button onClick={() => navigate('/dashboard')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
             <Home className="w-5 h-5" />
@@ -127,7 +130,7 @@ export default function Settings() {
                     </div>
                     <div className="py-2">
                       <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-terminal-green/10 transition-colors flex items-center gap-3 tracking-wider cursor-pointer">
-                        <Key className="w-4 h-4 opacity-70" /> UPDATE_KEY
+                        <Key className="w-4 h-4 opacity-70" /> UPDATE_PASSWORD
                       </button>
                       <button 
                         onClick={handleSignOut}

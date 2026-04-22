@@ -113,9 +113,12 @@ export default function CalendarView() {
       
       {/* Left Nav Rail */}
       <aside className="w-16 border-r border-terminal-green/20 flex flex-col items-center py-4 gap-8 z-20 bg-terminal-bg relative hidden sm:flex">
-        <div className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+        <button 
+          onClick={() => navigate('/dashboard')}
+          className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)] cursor-pointer hover:bg-terminal-green/30 transition-colors"
+        >
           <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
-        </div>
+        </button>
         <nav className="flex flex-col gap-4 w-full items-center">
           <button onClick={() => navigate('/dashboard')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-terminal-green hover:bg-terminal-green/20 cursor-pointer">
             <Home className="w-5 h-5" />
@@ -160,7 +163,7 @@ export default function CalendarView() {
                     </div>
                     <div className="py-2">
                       <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-terminal-green/10 transition-colors flex items-center gap-3 tracking-wider cursor-pointer">
-                        <Key className="w-4 h-4 opacity-70" /> UPDATE_KEY
+                        <Key className="w-4 h-4 opacity-70" /> UPDATE_PASSWORD
                       </button>
                       <button 
                         onClick={handleSignOut}
@@ -183,26 +186,53 @@ export default function CalendarView() {
             {/* Controls */}
             <div className="flex items-center justify-between border-b border-terminal-green/20 pb-4">
               <div className="flex items-center gap-4">
-                <button onClick={prevMonth} className="p-2 border border-terminal-green/50 hover:bg-terminal-green/20 transition-colors cursor-pointer">
+                <button onClick={prevMonth} className="p-2 border border-terminal-green/50 hover:bg-terminal-green/20 transition-colors cursor-pointer shrink-0">
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <button onClick={nextMonth} className="p-2 border border-terminal-green/50 hover:bg-terminal-green/20 transition-colors cursor-pointer">
+                <button onClick={nextMonth} className="p-2 border border-terminal-green/50 hover:bg-terminal-green/20 transition-colors cursor-pointer shrink-0">
                   <ChevronRight className="w-5 h-5" />
                 </button>
-                <h2 className="font-pixel text-xl sm:text-2xl tracking-widest ml-4 mt-1 uppercase">
-                  {MONTH_NAMES[month]} {year}
-                </h2>
+                
+                {/* Month & Year Jump Pickers */}
+                <div className="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4">
+                  <select 
+                    value={month} 
+                    onChange={(e) => {
+                      const newDate = new Date(currentDate);
+                      newDate.setMonth(parseInt(e.target.value));
+                      setCurrentDate(newDate);
+                    }}
+                    className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-xl sm:text-2xl tracking-widest uppercase pb-1 outline-none cursor-pointer transition-colors text-center"
+                  >
+                    {MONTH_NAMES.map((m, i) => (
+                      <option key={m} value={i} className="bg-terminal-bg text-sm font-mono">{m}</option>
+                    ))}
+                  </select>
+                  <select 
+                    value={year} 
+                    onChange={(e) => {
+                      const newDate = new Date(currentDate);
+                      newDate.setFullYear(parseInt(e.target.value));
+                      setCurrentDate(newDate);
+                    }}
+                    className="appearance-none bg-transparent border-b border-terminal-green/50 hover:border-terminal-green text-terminal-green font-pixel text-xl sm:text-2xl tracking-widest uppercase pb-1 outline-none cursor-pointer transition-colors text-center"
+                  >
+                    {Array.from({length: 10}, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
+                      <option key={y} value={y} className="bg-terminal-bg text-sm font-mono">{y}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <button 
                 onClick={jumpToToday}
-                className="px-4 py-2 border border-terminal-green/50 text-xs font-bold tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block"
+                className="px-4 py-2 border border-terminal-green/50 text-xs font-bold tracking-widest uppercase hover:bg-terminal-green/10 transition-colors cursor-pointer hidden sm:block shrink-0"
               >
                 RETURN_TO_PRESENT
               </button>
             </div>
 
             {/* Grid Container */}
-            <div className="flex-1 flex flex-col min-h-[600px] border border-terminal-green/30 bg-terminal-green/5">
+            <div className="flex-1 flex flex-col min-h-[600px] lg:min-h-0 border border-terminal-green/30 bg-terminal-green/5">
               
               {/* Day of Week Headers */}
               <div className="grid grid-cols-7 border-b border-terminal-green/30 bg-terminal-green/10">
@@ -214,7 +244,7 @@ export default function CalendarView() {
               </div>
               
               {/* Day Cells */}
-              <div className="flex-1 grid grid-cols-7 grid-rows-5 sm:grid-rows-auto">
+              <div className="flex-1 grid grid-cols-7 grid-rows-5 sm:grid-rows-auto h-full">
                 {calendarCells.map((day, index) => {
                   const isToday = day && 
                     day.getDate() === new Date().getDate() && 

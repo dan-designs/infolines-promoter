@@ -91,7 +91,6 @@ function EventCard({
         </div>
       </div>
       
-      {/* Time Group */}
       <div className="flex flex-wrap gap-4 text-sm opacity-80 font-mono mb-4">
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-terminal-green/70" />
@@ -103,7 +102,6 @@ function EventCard({
         </div>
       </div>
 
-      {/* Expanded Data Block */}
       <div className="flex-1 space-y-3 text-xs opacity-75 border-t border-terminal-green/20 pt-4 font-mono">
         <div className="flex items-start gap-2">
           <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-terminal-green/70" />
@@ -206,9 +204,12 @@ export default function Dashboard() {
       
       {/* Left Nav Rail */}
       <aside className="w-16 border-r border-terminal-green/20 flex flex-col items-center py-4 gap-8 z-20 bg-terminal-bg relative hidden sm:flex">
-        <div className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+        <button 
+          onClick={() => navigate('/dashboard')}
+          className="w-10 h-10 flex items-center justify-center border border-terminal-green bg-terminal-green/10 mb-4 shadow-[0_0_10px_rgba(0,255,65,0.2)] cursor-pointer hover:bg-terminal-green/30 transition-colors"
+        >
           <img src="https://res.cloudinary.com/datad8tms/image/upload/q_auto/f_auto/v1775571098/infolines-logo-bit_d1jmgr.svg" alt="Infolines" className="w-6 h-6 [image-rendering:pixelated]" />
-        </div>
+        </button>
         <nav className="flex flex-col gap-4 w-full items-center">
           <button onClick={() => navigate('/dashboard')} className="w-10 h-10 flex items-center justify-center transition-colors relative group text-black bg-terminal-green shadow-[0_0_10px_rgba(0,255,65,0.3)] cursor-pointer">
             <Home className="w-5 h-5" />
@@ -261,7 +262,7 @@ export default function Dashboard() {
                     </div>
                     <div className="py-2">
                       <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-terminal-green/10 transition-colors flex items-center gap-3 tracking-wider cursor-pointer">
-                        <Key className="w-4 h-4 opacity-70" /> UPDATE_KEY
+                        <Key className="w-4 h-4 opacity-70" /> UPDATE_PASSWORD
                       </button>
                       <button 
                         onClick={handleSignOut}
@@ -312,7 +313,7 @@ export default function Dashboard() {
                     <EventCard 
                       key={event.id} 
                       event={event} 
-                      opacity="opacity-50 grayscale" 
+                      opacity="grayscale border-dashed" 
                       isReadOnly={true} 
                     />
                   ))}
