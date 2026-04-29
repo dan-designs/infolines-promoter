@@ -184,45 +184,44 @@ export default function EventDrawer({ isOpen, onClose, onSuccess, eventToEdit }:
               </div>
             </div>
             
-            {/* UPDATED: Unified responsive grid for Date/Time Pickers */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 border-t border-terminal-green/20 pt-6">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-terminal-green/20 pt-6">
+              <div className="min-w-0 w-full">
                 <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Start_Date *</label>
-                <div className="relative">
+                <div className="relative w-full">
                   <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
                   <input 
                     type="date" name="startDate" required value={formData.startDate} onChange={handleChange}
-                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none" 
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none min-w-0" 
                   />
                 </div>
               </div>
-              <div>
+              <div className="min-w-0 w-full">
                 <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">Start_Time *</label>
-                <div className="relative">
+                <div className="relative w-full">
                   <Clock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
                   <input 
                     type="time" name="startTime" required value={formData.startTime} onChange={handleChange}
-                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none" 
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none min-w-0" 
                   />
                 </div>
               </div>
-              <div>
+              <div className="min-w-0 w-full">
                 <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">End_Date *</label>
-                <div className="relative">
+                <div className="relative w-full">
                   <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
                   <input 
                     type="date" name="endDate" required value={formData.endDate} onChange={handleChange}
-                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none" 
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none min-w-0" 
                   />
                 </div>
               </div>
-              <div>
+              <div className="min-w-0 w-full">
                 <label className="block text-xs mb-2 opacity-80 tracking-widest uppercase">End_Time *</label>
-                <div className="relative">
+                <div className="relative w-full">
                   <Clock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
                   <input 
                     type="time" name="endTime" required value={formData.endTime} onChange={handleChange}
-                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none" 
+                    className="w-full bg-terminal-green/5 border border-terminal-green/50 focus:border-terminal-green focus:bg-terminal-green/10 outline-none py-3 pl-10 pr-3 text-terminal-green font-mono text-sm [color-scheme:dark] transition-all rounded-none min-w-0" 
                   />
                 </div>
               </div>
