@@ -316,7 +316,7 @@ export default function CalendarView() {
         {/* Global FAB */}
         <button 
           onClick={handleCreateNew}
-          className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-14 h-14 sm:w-16 sm:h-16 bg-terminal-green text-black flex items-center justify-center hover:bg-[#00cc33] transition-all shadow-[0_0_20px_rgba(0,255,65,0.4)] hover:shadow-[0_0_30px_rgba(0,255,65,0.6)] z-30 group cursor-pointer"
+          className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 w-14 h-14 sm:w-16 sm:h-16 bg-terminal-green text-black flex items-center justify-center hover:bg-[#00cc33] transition-all shadow-[0_0_20px_rgba(0,255,65,0.4)] hover:shadow-[0_0_30px_rgba(0,255,65,0.6)] z-50 group cursor-pointer"
         >
           <Plus className="w-8 h-8 group-hover:rotate-90 transition-transform duration-300" />
         </button>
