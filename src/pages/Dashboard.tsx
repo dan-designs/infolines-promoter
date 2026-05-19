@@ -12,7 +12,11 @@ import type { EventRecord } from '../components/EventDrawer';
 
 const formatDate = (dateString: string) => {
   const d = new Date(dateString);
-  return d.toISOString().split('T')[0];
+  // FIX: Extract local date parts instead of forcing ISO (UTC) string
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 const formatTime = (dateString: string) => {
@@ -197,7 +201,11 @@ export default function Dashboard() {
   const now = new Date();
   
   const futureEvents = events.filter(e => new Date(e.start_time) >= now && e.status !== 'cancelled');
-  const history = events.filter(e => new Date(e.start_time) < now || e.status === 'cancelled');
+  
+  // FIX: Added .reverse() to flip the chronological stack so the newest history is on top
+  const history = events
+    .filter(e => new Date(e.start_time) < now || e.status === 'cancelled')
+    .reverse();
 
   return (
     <div className="h-screen flex scanlines crt-flicker bg-terminal-bg text-terminal-green font-mono selection:bg-terminal-green selection:text-black overflow-hidden">
